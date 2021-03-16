@@ -23,7 +23,6 @@
 	left: 0;
 	top: 0;
 	box-sizing: border-box;
-	width: 5000px;
 	height: 100%;
 	display: flex;
 	justify-content: flex-start;

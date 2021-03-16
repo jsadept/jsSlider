@@ -46,6 +46,7 @@ class Slider {
 
 	_init() {
 		this._cloneSlides();
+		this._createSlider();
 		this.gotoSlide(this.slidesPerScroll, false);
 		this._createSliderButtons();
 	}
@@ -71,7 +72,23 @@ class Slider {
 
 	_createInfinityArrays() {}
 
-	_createSlider() {}
+	_createSlider() {
+		const spaceBetween = this.spaceBetween / 2;
+		const widthOfWrapper = this.slidesWrapper.offsetWidth;
+		const heightOfWrapper = this.slidesWrapper.offsetHeight;
+		const slideWidth = widthOfWrapper / this.slidesPerView - this.spaceBetween;
+		const slideHeight = heightOfWrapper / this.slidesPerView - this.spaceBetween;
+		console.log('here');
+		// set slides css settings
+		this.updatedSlides.forEach((current) => {
+			current.style.width = `${slideWidth}px`;
+			current.style.margin = `0 ${spaceBetween}px`;
+		});
+
+		// set global properties
+		this.sliderMoveWidth = (slideWidth + this.spaceBetween) * this.slidesPerScroll;
+		this.sliderMoveHeight = (slideHeight + this.spaceBetween) * this.slidesPerScroll;
+	}
 
 	_render() {}
 
@@ -98,6 +115,7 @@ class Slider {
 		firstClone.forEach((curr) => this.slidesContainer.append(curr));
 		lastClone.forEach((curr, i) => this.slidesContainer.prepend(curr));
 
+		// set global properties
 		this.updatedSlides = document.querySelectorAll('.a-slide');
 	}
 
@@ -174,14 +192,15 @@ class SliderHorizontal extends Slider {
 
 	gotoSlide(index, transition) {
 		const i = Number(index);
-		let slideWidth = 280;
-		let MOVE_WIDTH = slideWidth * i;
+		const slideWidth = this.sliderMoveWidth;
+		const moveWidth = slideWidth * i;
 
 		this.activeIndex = i;
-		console.log(`${this.speed}s ${this.timingFunction}`);
+
 		if (transition) this.slidesContainer.style.transition = `${this.duration}s ${this.timingFunction}`;
 		else this.slidesContainer.style.transition = 'none';
-		this.slidesContainer.style.transform = `translateX(${-MOVE_WIDTH}px)`;
+
+		this.slidesContainer.style.transform = `translateX(${-moveWidth}px)`;
 	}
 }
 
@@ -204,7 +223,7 @@ const slider1 = createSlider({
 	direction: 'horizontal',
 	arrows: true,
 	loop: true,
-	slidesPerView: 4,
-	slidesPerScroll: 4,
+	slidesPerView: 1,
+	slidesPerScroll: 1,
 	spaceBetween: 20,
 });
