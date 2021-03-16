@@ -41,6 +41,8 @@ class Slider {
 		// Combining default configuration with user configuration data
 		Object.assign(this, props.defaultConfig, props);
 
+		if (this.slidesPerScroll > this.slidesPerView) this.slidesPerScroll = this.slidesPerView;
+
 		this._init();
 	}
 
@@ -49,6 +51,7 @@ class Slider {
 		this._createSlider();
 		this.gotoSlide(this.slidesPerScroll, false);
 		this._createSliderButtons();
+		console.log(this.slidesPerScroll);
 	}
 
 	_initSliderSelectors() {}
@@ -86,8 +89,8 @@ class Slider {
 		});
 
 		// set global properties
-		this.sliderMoveWidth = (slideWidth + this.spaceBetween) * this.slidesPerScroll;
-		this.sliderMoveHeight = (slideHeight + this.spaceBetween) * this.slidesPerScroll;
+		this.sliderMoveWidth = slideWidth + this.spaceBetween;
+		this.sliderMoveHeight = slideHeight + this.spaceBetween;
 	}
 
 	_render() {}
@@ -192,8 +195,7 @@ class SliderHorizontal extends Slider {
 
 	gotoSlide(index, transition) {
 		const i = Number(index);
-		const slideWidth = this.sliderMoveWidth;
-		const moveWidth = slideWidth * i;
+		const moveWidth = this.sliderMoveWidth * i;
 
 		this.activeIndex = i;
 
@@ -223,7 +225,7 @@ const slider1 = createSlider({
 	direction: 'horizontal',
 	arrows: true,
 	loop: true,
-	slidesPerView: 1,
-	slidesPerScroll: 1,
+	slidesPerView: 2,
+	slidesPerScroll: 5,
 	spaceBetween: 20,
 });
