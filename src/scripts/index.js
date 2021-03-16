@@ -37,6 +37,8 @@ class Slider {
 	constructor(props) {
 		// Combining default configuration with user configuration data
 		Object.assign(this, props.defaultConfig, props);
+
+		this._cloneSlides();
 	}
 
 	_init() {}
@@ -53,9 +55,28 @@ class Slider {
 
 	_render() {}
 
-	_cloneSlides() {}
+	_cloneSlides() {
+		// nodeList this.slides to array slides
+		const slides = [...this.slides];
 
-	reRender(direction) {}
+		// clone first slidesPerScroll items
+		const firstClone = slides
+			.filter((current, index) => (index < this.slidesPerScroll ? true : false))
+			.map((current) => current.cloneNode(true));
+
+		// clone last slidesPerScroll items
+		const lastClone = slides
+			.filter((current, index) => (index >= slides.length - this.slidesPerScroll ? true : false))
+			.map((current) => current.cloneNode(true));
+
+		// reverse lastClone array for correct DOM output
+		lastClone.reverse();
+
+		firstClone.forEach((curr) => this.slidesContainer.append(curr));
+		lastClone.forEach((curr, i) => this.slidesContainer.prepend(curr));
+	}
+
+	reRender() {}
 
 	start() {}
 
@@ -132,4 +153,3 @@ const slider1 = createSlider({
 	spaceBetween: 20,
 	speed: 2000,
 });
-
