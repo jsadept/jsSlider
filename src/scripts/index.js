@@ -60,7 +60,7 @@ class Slider {
 
 	_createSliderDots() {
 		const dotsLength = this.slides.length / this.slidesPerView;
-		for (let i = 0; i < dotsLength	; i++) {
+		for (let i = 0; i < dotsLength; i++) {
 			const el = document.createElement('span');
 			el.classList.add('a-dots__dot');
 			this.dotsContainer.append(el);
@@ -71,7 +71,7 @@ class Slider {
 	_setActiveDot() {
 		let activeDotIndex = Math.round(this.activeIndex / this.slidesPerView - 1);
 		if (activeDotIndex < 0) activeDotIndex = 0;
-		if (activeDotIndex > this.dots.length-1) activeDotIndex = this.dots.length - 1;
+		if (activeDotIndex > this.dots.length - 1) activeDotIndex = this.dots.length - 1;
 		const dotsArray = [...this.dots];
 		dotsArray.forEach((curr, index) => {
 			if (index === activeDotIndex) curr.classList.add('a-dots__dot_active');
@@ -88,8 +88,7 @@ class Slider {
 		});
 
 		this.slidesContainer.addEventListener('transitionend', () => {
-			// const cloneIndex = this._hasCloneNodes();
-			// console.log('this._isEnd()'+this._isEnd());
+			const cloneIndex = this._getCurrentCloneIndex();
 			if (this._isEnd()) {
 				this.gotoSlide(cloneIndex, false);
 				this.isMoving = false;
@@ -133,7 +132,7 @@ class Slider {
 				const currentSlideClone = currentSlide.cloneNode(true);
 				currentSlideClone.dataset.originalIndex = i + this.slidesPerScroll;
 				firstClone.push(currentSlideClone);
-			} else if (i >= (slides.length - this.slidesPerScroll)) {
+			} else if (i >= slides.length - this.slidesPerScroll) {
 				const currentSlide = this.slides[i];
 				const currentSlideClone = currentSlide.cloneNode(true);
 				currentSlideClone.dataset.originalIndex = i + this.slidesPerScroll;
@@ -164,14 +163,15 @@ class Slider {
 		const result = isLast() || isFirst();
 		return result;
 	}
-	// _hasCloneNodes() {
-	// 	for (let i = this.activeIndex; i < this.activeIndex + this.slidesPerScroll; i++) {
-	// 		if (this.updatedSlides[i].dataset.originalIndex) {
-	// 			return this.updatedSlides[i].dataset.originalIndex;
-	// 		}
-	// 	}
-	// 	return false;
-	// }
+
+	_getCurrentCloneIndex() {
+		for (let i = this.activeIndex; i < this.activeIndex + this.slidesPerScroll; i++) {
+			if (this.updatedSlides[i].dataset.originalIndex) {
+				return this.updatedSlides[i].dataset.originalIndex;
+			}
+		}
+		return false;
+	}
 
 	start() {}
 
@@ -181,7 +181,7 @@ class Slider {
 
 	previousSlide() {}
 
-	gotoSlide(index) {}
+	gotoSlide(index, transition) {}
 }
 
 class SliderVertical extends Slider {
@@ -199,7 +199,7 @@ class SliderVertical extends Slider {
 
 	previousSlide() {}
 
-	gotoSlide(index) {}
+	gotoSlide(index, transition) {}
 }
 
 class SliderHorizontal extends Slider {
