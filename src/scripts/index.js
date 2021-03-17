@@ -91,10 +91,9 @@ class Slider {
 			const cloneIndex = this._getCurrentCloneIndex();
 			if (this._isEnd()) {
 				this.gotoSlide(cloneIndex, false);
-				this.isMoving = false;
-			} else {
-				this.isMoving = false;
 			}
+
+			this.isMoving = false;
 			this._setActiveDot();
 		});
 	}
